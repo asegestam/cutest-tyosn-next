@@ -28,6 +28,7 @@ const Header: React.FC = () => {
         className="bg-transparent"
         href="https://github.com/asegestam/cutest-tyson"
         target="_blank"
+        rel="noopener noreferrer"
       >
         <Icon as={FaGithub} w={6} h={6} className="hover:opacity-70" />
       </a>
