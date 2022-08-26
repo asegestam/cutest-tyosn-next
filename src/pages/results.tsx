@@ -23,7 +23,7 @@ export const getStaticProps: GetServerSideProps = async (context) => {
     props: {
       tysons: await getOrderedTysons(),
     },
-    revalidate: 1,
+    revalidate: 60 * 60,
   };
 };
 
@@ -107,7 +107,7 @@ const Home: NextPage<{ tysons: TysonQueryResult }> = (props) => {
                               src={tyson.imgPath}
                               width={64}
                               height={64}
-                              quality={50}
+                              quality={30}
                               className="w-16 h-16 object-cover rounded ml-2"
                             />
                             <p className="pl-2 text-ellipsis overflow-hidden">
