@@ -1,4 +1,6 @@
+import { Button } from "@chakra-ui/react";
 import { Tyson } from "@prisma/client";
+import clsx from "clsx";
 import Image from "next/image";
 
 const TysonCard: React.FC<{
@@ -7,7 +9,7 @@ const TysonCard: React.FC<{
   disabled: boolean;
 }> = (props) => {
   return (
-    <div className="flex flex-col justify-center select-none">
+    <div className={clsx("flex flex-col justify-center select-none", {})}>
       <h1 className="text-center text-2xl mb-2">{props.tyson.name}</h1>
       <Image
         width={375}
@@ -17,15 +19,15 @@ const TysonCard: React.FC<{
         className="rounded-lg shadow-lg shadow-black animate-fade-in duration-300"
         src={props.tyson.imgPath}
       />
-      <button
+      <Button
+        colorScheme="green"
         onClick={() => props.vote()}
+        className="shadow-lg mt-10 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300 disabled:cursor-wait"
         disabled={props.disabled}
-        className="shadow-lg  px-4 py-2 rounded mt-10 bg-green-600 hover:bg-green-500 hover:scale-105 disabled:bg-slate-500 disabled:cursor-wait"
+        isLoading={props.disabled}
       >
-        <div className="flex justify-center">
-          <span className="ml-2">Cuter</span>
-        </div>
-      </button>
+        Cuter
+      </Button>
     </div>
   );
 };

@@ -4,6 +4,19 @@ import Image from "next/image";
 import { prisma } from "../server/db/client";
 import { clsx } from "clsx";
 import Link from "next/link";
+import {
+  Badge,
+  Button,
+  Divider,
+  IconButton,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tooltip,
+  Tr,
+} from "@chakra-ui/react";
+import { FaArrowLeft } from "react-icons/fa";
 
 export const getStaticProps: GetServerSideProps = async (context) => {
   return {
@@ -56,64 +69,73 @@ const Home: NextPage<{ tysons: TysonQueryResult }> = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Link href="/">
-        <a>
-          <div className="ml-1 mt-2 bg-green-400 dark:bg-green-600 p-2 float-left rounded text-sm absolute left-0 top-0">
-            Go Back
-          </div>
-        </a>
+        <IconButton
+          colorScheme="green"
+          icon={<FaArrowLeft />}
+          aria-label={"Go back"}
+          className="mt-4 ml-2"
+        />
       </Link>
       <div className="flex flex-col items-center">
-        <div className="flex flex-row">
-          <h1 className="text-2xl my-5">Results</h1>
-        </div>
-        <div className="flex flex-col w-full max-w-2xl border border-slate-300">
-          {props.tysons
-            .sort((a, b) => {
-              const difference =
-                generateVotePercentage(b) - generateVotePercentage(a);
+        <h1 className="text-3xl my-5">Results</h1>
+        <Divider />
+        <TableContainer>
+          <Table size="lg">
+            <Tbody>
+              {props.tysons
+                .sort((a, b) => {
+                  const difference =
+                    generateVotePercentage(b) - generateVotePercentage(a);
 
-              if (difference === 0) {
-                return b._count.VoteFor - a._count.VoteFor;
-              }
+                  if (difference === 0) {
+                    return b._count.VoteFor - a._count.VoteFor;
+                  }
 
-              return difference;
-            })
-            .map((tyson, index) => {
-              const votePercentage = generateVotePercentage(tyson);
-
-              return (
-                <div
-                  key={tyson.id}
-                  className="relative flex border-b border-slate-300 p-2 items-center justify-between"
-                >
-                  <div className="flex items-center">
-                    <div className="flex items-center pl-4">
-                      <Image
-                        src={tyson.imgPath}
-                        width={64}
-                        height={64}
-                        quality={50}
-                        className="w-16 h-16 object-cover rounded ml-2"
-                      />
-                      <div className="pl-2 capitalize">{tyson.name}</div>
-                    </div>
-                  </div>
-                  <div
-                    className={clsx({
-                      "pr-4": true,
-                      "text-green-400": votePercentage > 50,
-                      "text-red-600": votePercentage <= 50,
-                    })}
-                  >
-                    {votePercentage.toFixed(2) + "%"}
-                  </div>
-                  <div className="absolute top-0 left-0 z-20 flex items-center justify-center px-2 font-semibold text-white bg-gray-600 border border-gray-500 shadow-lg rounded-br-md">
-                    {index + 1}
-                  </div>
-                </div>
-              );
-            })}
-        </div>
+                  return difference;
+                })
+                .map((tyson, index) => {
+                  const votePercentage = generateVotePercentage(tyson);
+                  return (
+                    <Tr key={tyson.id}>
+                      <Td>
+                        <div className="relative flex items-center justify-between">
+                          <div className="flex items-center">
+                            <Badge variant="subtle" className="mr-4 text-xl">
+                              <span className="px-1">{index + 1}</span>
+                            </Badge>
+                            <Image
+                              src={tyson.imgPath}
+                              width={64}
+                              height={64}
+                              quality={50}
+                              className="w-16 h-16 object-cover rounded ml-2"
+                            />
+                            <div className="pl-2 capitalize">{tyson.name}</div>
+                          </div>
+                          <div className="px-4">
+                            {votePercentage >= 50 && (
+                              <Tooltip label="Percentage this picture was voted cutest">
+                                <Badge variant="subtle" colorScheme="green">
+                                  {votePercentage.toFixed(2) + "%"}
+                                </Badge>
+                              </Tooltip>
+                            )}
+                            {votePercentage < 50 && (
+                              <Tooltip label="Percentage this picture was voted cutest">
+                                <Badge variant="subtle" colorScheme="red">
+                                  {votePercentage.toFixed(2) + "%"}
+                                </Badge>
+                              </Tooltip>
+                            )}
+                          </div>
+                        </div>
+                      </Td>
+                    </Tr>
+                  );
+                })}
+            </Tbody>
+          </Table>
+        </TableContainer>
       </div>
     </>
   );
