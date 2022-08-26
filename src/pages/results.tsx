@@ -110,7 +110,9 @@ const Home: NextPage<{ tysons: TysonQueryResult }> = (props) => {
                               quality={50}
                               className="w-16 h-16 object-cover rounded ml-2"
                             />
-                            <div className="pl-2 capitalize">{tyson.name}</div>
+                            <p className="pl-2 text-ellipsis overflow-hidden">
+                              {tyson.name}
+                            </p>
                           </div>
                           <div className="px-4">
                             {votePercentage >= 50 && (

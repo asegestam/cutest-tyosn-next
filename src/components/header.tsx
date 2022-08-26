@@ -4,7 +4,7 @@ const Header: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <div className="flex flex-row items-center absolute right-0 top-0 mr-4 mt-4">
+    <div className="flex flex-row items-center justify-end sm:absolute sm:right-0 sm:top-0 mr-4 mt-4">
       {colorMode === "light" && (
         <IconButton
           onClick={toggleColorMode}
@@ -26,7 +26,7 @@ const Header: React.FC = () => {
 
       <a
         className="bg-transparent"
-        href="https://github.com/asegestam/cutest-tyson"
+        href="https://github.com/asegestam/cutest-tyson-next"
         target="_blank"
         rel="noopener noreferrer"
       >
